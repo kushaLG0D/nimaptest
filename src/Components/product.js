@@ -10,7 +10,6 @@ const Product = () => {
   const [newproduct,setnewproduct]=useState({productname:"",category:"",price:""});
 
   const onChange = (e) => {
-    console.log(e.target.value);
     setnewproduct({ ...newproduct, [e.target.name]: e.target.value });
   };
 

@@ -7,7 +7,6 @@ const { type } = require("@testing-library/user-event/dist/type");
 router.get("/product", async (req, res) => {
   try {
     const product = await Product.find();
-    console.log(typeof product[0].categoryid);
     res.json(product);
   } catch (err) {
     res.status("500").json({ message: err.message || "Internal Error" });
@@ -20,10 +19,7 @@ router.post("/product", async (req, res) => {
     const categoryid = await Category.findOne({
       categoryname: req.body.category,
     });
-    console.log(req.body.category);
-    console.log(categoryid._id);
 
-    // console.log(categoryid[0]._id.toString());
     const product = new Product({
       productname: req.body.productname,
       category: req.body.category,
@@ -40,7 +36,6 @@ router.post("/product", async (req, res) => {
 router.delete("/deleteproduct/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    console.log(_id);
     const deleteProduct = await Product.deleteOne({ _id });
     res.json(deleteProduct);
   } catch (err) {
@@ -52,7 +47,6 @@ router.put("/editproduct/:id", async (req, res) => {
   try {
     const _id = req.params.id;
     let editproduct;
-    console.log(typeof _id);
     const categoryid = await Category.findOne({ categoryname: req.body.category});
 
     // console.log(categoryid._id);

@@ -8,7 +8,6 @@ const Product = require("../models/Product.js");
 router.get('/category',async(req,res)=>{
     try{
         const category =await Category.find();
-        // console.log(category);
         res.json(category);
         
     }
@@ -20,7 +19,6 @@ router.get('/category',async(req,res)=>{
 
 router.post('/category',async(req,res)=>{
     try{
-        console.log(req.body.categoryname);
         const newCategory=new Category({
             categoryname: req.body.categoryname
         })
@@ -39,7 +37,6 @@ router.delete('/deletecategory/:id', async(req, res)=>{
     try{
         const _id = req.params.id;
         
-        console.log(_id);
         const deleteCategory=await Category.deleteOne({_id});
         const deleteProduct=await Product.deleteMany({categoryid:_id});
         res.json(deleteProduct);
@@ -54,13 +51,10 @@ router.put('/editcategory/:id',async (req,res)=>{
     try{
         const _id = req.params.id;
         const categoryname = req.body.categoryname;
-        console.log(categoryname);
 
         const editcategory=await Category.updateOne({_id:_id},{$set:{categoryname:categoryname}},{new:true});
 
-        console.log(editcategory);
         const editProduct=await Product.updateMany({categoryid:_id},{$set:{category:req.body.categoryname}},{new:true});
-        console.log(editProduct);
 
         res.json(editProduct);
     }
