@@ -17,6 +17,7 @@ const Product = () => {
     event.preventDefault();
     addProduct(newproduct.productname,newproduct.category,newproduct.price);
     <Navigate to="/index" />
+    
   };
 
   return (

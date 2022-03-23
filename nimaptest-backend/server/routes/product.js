@@ -6,13 +6,27 @@ const { type } = require("@testing-library/user-event/dist/type");
 
 router.get("/product", async (req, res) => {
   try {
+    const limit = req.query.limit;
+    const page = req.query.page;
     const product = await Product.find();
-    res.json(product);
+    let startIndex=(page-1) * limit;
+    let endIndex=(page) * limit;
+    res.json(product.slice(startIndex, endIndex));
   } catch (err) {
     res.status("500").json({ message: err.message || "Internal Error" });
   }
 });
 
+router.get("/allproduct", async (req, res)=>{
+  try{
+    const product = await Product.find().countDocuments();
+    
+    res.json(product);
+  }
+  catch (err) {
+    res.status("500").json({ message: err.message || "Internal Error" });
+  }
+})
 
 router.post("/product", async (req, res) => {
   try {

@@ -7,6 +7,7 @@ const Apistate=(props)=>{
     const productdata =[];
     const [category,setcategory] =useState(categorydata);
     const [product,setproduct] =useState(productdata);
+    const [count,setcount]=useState();
 
     
     //Get ALl Category
@@ -17,24 +18,37 @@ const Apistate=(props)=>{
           headers:{"Content-Type": "application/json"}
         })
         const json = await response.json();
-        console.log(json);
         setcategory(json);
       };
     //   getAllCategory();
 
     //Get ALl Product
-    const getAllProduct =async()=>{
-        const url =`${host}/product`
+    const getAllProduct =async(page,limit)=>{
+        const url =`${host}/product?page=${page}&limit=${limit}`
         const response = await fetch(url,
           {method:"GET",
           headers:{"Content-Type": "application/json"}
         })
         const json = await response.json();
+        console.log(`Pageno - ${page}-${json}`);
         setproduct(json);
       };
 
-      //Post- Category
+      const getCount =async(page,limit)=>{
+        const url =`${host}/allproduct`
+        const response = await fetch(url,
+          {method:"GET",
+          headers:{"Content-Type": "application/json"}
+        })
+        const json = await response.json();
+        console.log(json);
+        setcount(json);
+      };
 
+
+
+
+      //Post- Category
       const addCategory = async (categoryname)=>{
         const url =`${host}/category`
         const response = await fetch(url,
@@ -152,7 +166,7 @@ const Apistate=(props)=>{
       }
 
     return (
-        <ApiContext.Provider value={{category,product,setproduct,setcategory,getAllCategory,getAllProduct,addProduct,deleteProduct,addCategory,deleteCategory,editCategory,editProduct}}>
+        <ApiContext.Provider value={{category,product,setproduct,setcategory,getAllCategory,getAllProduct,addProduct,deleteProduct,addCategory,deleteCategory,editCategory,editProduct,getCount,count}}>
             {props.children}
         </ApiContext.Provider>
         )

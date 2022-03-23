@@ -3,11 +3,9 @@ import apiContext from "../context/apicontext";
 import load from "lodash";
 
 const Index = () => {
-  useEffect(() => {
-    getAllProduct();
-  }, []);
+  
   const productList = useContext(apiContext);
-  const { getAllProduct, product, editProduct, deleteProduct } = productList;
+  const { getAllProduct, product, editProduct, deleteProduct,getCount,count } = productList;
   const [eproduct, seteproduct] = useState({
     eid: "",
     eproductname: "",
@@ -19,12 +17,15 @@ const Index = () => {
 
   //Pagination part
   const pagesize = 10;
-  const trim=load(product).slice(0).take(pagesize).value();
 
-  const [paginated, setpaginated] = useState(trim);
   const [current, setcurrent] = useState(1);
 
-  const pagecount = product ? Math.ceil(product.length / pagesize) : 0;
+  useEffect(() => {
+    getAllProduct(current,pagesize);
+    getCount();
+  }, []);
+
+  const pagecount = count ? Math.ceil(count / pagesize) : 0;
   const pages = load.range(1, pagecount + 1);
 
   const onChange = (e) => {
@@ -33,10 +34,8 @@ const Index = () => {
   //Pagination
   const pagination = (pageno) => {
     setcurrent(pageno);
-    const startIndex = (pageno - 1) * pagesize;
-    let pageinatedData = load(product).slice(startIndex).take(pagesize).value();
-    setpaginated(pageinatedData);
-  };
+    getAllProduct(pageno,pagesize);
+};
 
   const handleEdit = (e) => {
     e.preventDefault();
@@ -76,7 +75,7 @@ const Index = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.from(paginated).map((ele, i) => {
+            {Array.from(product).map((ele, i) => {
               return (
                 <tr>
                   <td>{i+1}</td>
